@@ -21,6 +21,7 @@ class PluginLoader(object):
         self.log = log or logging.getLogger(__name__)
         self.working_set = working_set or pkg_resources.working_set
         self.activated_plugins = OrderedDict()
+        self._plugin_contexts = {}
         self._initialized = False
 
     def init(self):
@@ -42,8 +43,15 @@ class PluginLoader(object):
     def initialize_plugins(self, *args, **kwargs):
         if not self._initialized:
             self.init()
-        for plugin in self.activated_plugins.values():
-            plugin.initialize(*args, **kwargs)
+        for plugin_id, plugin in self.activated_plugins.items():
+            context = {}
+            plugin.initialize(context, *args, **kwargs)
+            self._plugin_contexts[plugin_id] = context
+
+    def terminate_plugin(self, plugin_id):
+        plugin = self.activated_plugins[plugin_id]
+        context = self._plugin_contexts[plugin_id]
+        plugin.terminate(context)
 
     def is_plugin_enabled(self, plugin_id):
         return (plugin_id in self.enabled_plugins) or ('*' in self.enabled_plugins)

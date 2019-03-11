@@ -19,4 +19,5 @@ def requires_from_file(filename):
 
 setup(
     install_requires = requires_from_file('requirements.txt'),
+    tests_requires = requires_from_file('dev_requirements.txt'),
 )
