@@ -30,6 +30,7 @@ class PluginLoader(object):
         # build a directed acyclic graph and perform a topological sort to load
         # all plugins in the right order (in case plugins depend on each other)
         epoints = tuple(self.working_set.iter_entry_points(self.entry_point_name))
+        self.log.debug('%d plugins for entry point "%s" found', len(epoints), self.entry_point_name)
         for epoint in epoints:
             plugin_id = epoint.name
             # LATER: check for duplicate plugin id
@@ -67,9 +68,7 @@ class PluginLoader(object):
         if callable(module_or_function):
             plugin = module_or_function()
         else:
-            # entry point specification referred to a module. We could
-            # check for some kind of "magic" attribute (e.g. module__plugin__)
-            # or just tell the plugin manager what to use.
-            raise NotImplementedError()
+            # entry point specification referred to a module.
+            plugin = module_or_function
         return plugin
 
