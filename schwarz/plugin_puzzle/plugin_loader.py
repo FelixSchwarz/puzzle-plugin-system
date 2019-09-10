@@ -8,11 +8,12 @@ from __future__ import division, absolute_import, print_function, unicode_litera
 
 from collections import OrderedDict
 import logging
+import re
 
 import pkg_resources
 
 
-__all__ = ['PluginLoader']
+__all__ = ['parse_list_str', 'PluginLoader']
 
 class PluginLoader(object):
     def __init__(self, entry_point_name, enabled_plugins=('*',), log=None, working_set=None):
@@ -71,4 +72,13 @@ class PluginLoader(object):
             # entry point specification referred to a module.
             plugin = module_or_function
         return plugin
+
+
+
+def parse_list_str(setting_str):
+    """
+    Split a string like 'foo, bar' into ('foo', 'bar').
+    Also handles 'irregular' spacing like "foo  ,bar".
+    """
+    return re.split('\s*,\s*', setting_str)
 
