@@ -7,8 +7,8 @@
 from pkg_resources import WorkingSet
 from pythonic_testcase import *
 
-from attribute_dict import AttrDict
-from plugin_loader import PluginLoader
+from schwarz.plugin_puzzle import PluginLoader
+from schwarz.plugin_puzzle.lib import AttrDict
 
 
 class PluginLoaderTest(PythonicTestCase):
