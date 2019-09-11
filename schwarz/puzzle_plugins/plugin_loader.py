@@ -54,6 +54,7 @@ class PluginLoader(object):
         plugin = self.activated_plugins[plugin_id]
         context = self._plugin_contexts[plugin_id]
         plugin.terminate(context)
+        # TODO: remove from activated_plugins / _plugin_contexts
 
     def is_plugin_enabled(self, plugin_id):
         return (plugin_id in self.enabled_plugins) or ('*' in self.enabled_plugins)

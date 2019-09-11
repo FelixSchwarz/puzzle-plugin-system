@@ -14,7 +14,7 @@ Example application:
 
 ```python
 # "myapp.plugins" module
-from schwarz.plugin_puzzle import SignalRegistry
+from schwarz.puzzle_plugins import SignalRegistry
 
 registry = SignalRegistry()
 
@@ -31,7 +31,7 @@ result = registry.call_plugin(AppSignal.foo, signal_kwargs={'a': 137})
 This is plugin code (e.g. `myplugin.py`):
 
 ```python
-from schwarz.plugin_puzzle import connect_signals, disconnect_signals
+from schwarz.puzzle_plugins import connect_signals, disconnect_signals
 from myapp.plugins import AppSignal
 
 class MyPlugin:
@@ -101,7 +101,7 @@ The `my_plugin` module must contain two functions which are called by the main a
 The main application needs to initialize the plugins at startup. If you use blinker-based signalling you must keep the `plugin_loader` instance during the whole lifetime of the application. When the instance is garbage collected all blinker signal connections will be lost.
 
 ```python
-from schwarz.plugin_puzzle import parse_list_str, PluginLoader
+from schwarz.puzzle_plugins import parse_list_str, PluginLoader
 from myapp.plugins import registry
 
 def initialize_plugins():
