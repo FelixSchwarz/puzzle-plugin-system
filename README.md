@@ -39,30 +39,24 @@ class MyPlugin:
         self._connected_signals = None
         self._registry = registry
 
-    @classmethod
-    def initialize(cls, context, registry):
-        plugin = MyPlugin(registry)
-        plugin._connected_signals = connect_signals(plugin.signal_map(), registry)
-        context['plugin'] = plugin
-
-    def terminate(self):
-        disconnect_signals(self._connected_signals, self._registry)
-        self._registry = None
-        self._connected_signals = None
-
     def signal_map(self):
         return {
             AppSignal.foo: handle_foo,
         }
 
 
-# The main application must call "initialize(context, registry)" on startup.
+# The main application must call this function on startup.
 # See "Plugin Discovery" section on how to do this.
-initialize = MyPlugin.initialize
+def initialize(context, registry):
+    plugin = MyPlugin(registry)
+    plugin._connected_signals = connect_signals(plugin.signal_map(), registry)
+    context['plugin'] = plugin
 
 def terminate(context):
     plugin = context['plugin']
-    plugin.terminate()
+    disconnect_signals(plugin._connected_signals, plugin._registry)
+    plugin._registry = None
+    plugin._connected_signals = None
 
 
 # --- actual plugin functionality -----------------------------------------
