@@ -35,14 +35,13 @@ from schwarz.plugin_puzzle import connect_signals, disconnect_signals
 from myapp.plugins import AppSignal
 
 class MyPlugin:
-    def __init__(self):
+    def __init__(self, registry):
         self._connected_signals = None
-        self._registry = None
+        self._registry = registry
 
     @classmethod
     def initialize(cls, context, registry):
-        plugin = MyPlugin()
-        self._registry = registry
+        plugin = MyPlugin(registry)
         plugin._connected_signals = connect_signals(plugin.signal_map(), registry)
         context['plugin'] = plugin
 
