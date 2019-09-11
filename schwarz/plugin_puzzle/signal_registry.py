@@ -43,7 +43,7 @@ class SignalRegistry(object):
         nr_receivers = len(signal_.receivers)
         return (nr_receivers > 0)
 
-    def call_plugin(self, signal_name, *, log=None, signal_args=(), signal_kwargs=None):
+    def call_plugin(self, signal_name, *, log=None, sender=None, signal_kwargs=None):
         if not self.has_receivers(signal_name):
             if log:
                 log.warning('no receivers for signal %r', signal_name)
@@ -58,7 +58,8 @@ class SignalRegistry(object):
 
         if signal_kwargs is None:
             signal_kwargs = {}
-        signal_results = signal_.send(*signal_args, **signal_kwargs)
+        sender = (sender,) if sender else ()
+        signal_results = signal_.send(*sender, **signal_kwargs)
         if len(signal_results) != 1:
             raise ValueError('multiple results returned after emitting signal %r' % signal_name)
     

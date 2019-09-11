@@ -67,7 +67,7 @@ def terminate(context):
 
 
 # --- actual plugin functionality -----------------------------------------
-def handle_foo(a=21):
+def handle_foo(sender, a=21):
     return a * 2
 ```
 
