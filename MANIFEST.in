@@ -1,6 +1,4 @@
 
-include LICENSE.txt
+include *.cfg, *.md, *.txt
 include pyproject.toml
-include setup.cfg
-include VERSION.txt
 
