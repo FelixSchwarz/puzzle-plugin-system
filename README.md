@@ -46,7 +46,7 @@ class MyPlugin:
         context['plugin'] = plugin
 
     def terminate(self):
-        disconnect_signals(plugin._connected_signals, self._registry)
+        disconnect_signals(self._connected_signals, self._registry)
         self._registry = None
         self._connected_signals = None
 
@@ -104,7 +104,7 @@ The main application needs to initialize the plugins at startup. If you use blin
 from schwarz.plugin_puzzle import parse_list_str, PluginLoader
 from myapp.plugins import registry
 
-def initialize_plugins(setting)
+def initialize_plugins():
     # This string is usually stored in the application config.
     # Use "*" to enable all plugins.
     plugin_config_str = 'MyPlugin, OtherPlugin'
