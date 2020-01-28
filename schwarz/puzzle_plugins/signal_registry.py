@@ -70,7 +70,14 @@ class SignalRegistry(object):
         signal_results = signal_.send(*sender, **signal_kwargs)
         if len(signal_results) != 1:
             raise ValueError('multiple results returned after emitting signal %r' % signal_name)
-    
+
         receiver, receiver_result = signal_results[0]
         return receiver_result
+
+    def send(self, signal_name, *, sender=None, signal_kwargs=None):
+        signal_ = self.signal(signal_name)
+        sender = (sender,) if sender else ()
+        if signal_kwargs is None:
+            signal_kwargs = {}
+        signal_.send(*sender, **signal_kwargs)
 
