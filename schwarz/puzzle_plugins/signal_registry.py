@@ -38,6 +38,14 @@ class SignalRegistry(object):
     def signal(self):
         return self.namespace.signal
 
+    def connect(self, signal_name, handler):
+        signal = self.signal(signal_name)
+        signal.connect(handler)
+
+    def disconnect(self, signal_name, handler):
+        signal = self.signal(signal_name)
+        signal.disconnect(handler)
+
     def has_receivers(self, signal_name):
         signal_ = self.signal(signal_name)
         nr_receivers = len(signal_.receivers)
