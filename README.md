@@ -77,8 +77,8 @@ However I believe the more common scenario (and usually main motivation to intro
 
 Create a separate setuptools-project for your plugin. Add your code (for example as shown in the "Events and Signals" section above).
 
-setup.cfg
 ```python
+# file: setup.cfg
 [options.entry_points]
 myapp.plugins =
     MyPlugin = my_plugin
