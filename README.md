@@ -68,7 +68,7 @@ def handle_foo(sender, a=21):
 Plugin Discovery (setuptools)
 --------------------------------
 
-The blinker signalling above requires that plugins subscribe to specifc signals before the main application triggers a signal. When all plugins are known while writing the main application you can just insert the right calls in the startup routine and everything will be fine.
+The blinker signalling above requires that plugins subscribe to specific signals before the main application triggers a signal. When all plugins are known while writing the main application you can just insert the right calls in the startup routine and everything will be fine.
 
 However I believe the more common scenario (and usually main motivation to introduce a plugin system) is to *separate* plugins from the main application. For example several customers could use the same base software but different plugins which add customer-specific functionality. In this situation the main application must be able to discover and activate available plugins. This is done with the help of setuptools' `entry points`.
 
