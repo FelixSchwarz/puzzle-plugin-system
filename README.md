@@ -65,6 +65,14 @@ def handle_foo(sender, a=21):
 ```
 
 
+### SignalRegistry: triggering plugin functionality
+
+`registry.call_plugins(signal_name, signal_kwargs={…}, expect_single_result=False)` is convenience method to get return values from all plugins registered for the specified signal.
+
+If you pass `expect_single_result=True` this means you still get only a single (scalar) result value. If multiple plugins return a non-`None` value `ValueError` is raised.
+
+
+
 Plugin Discovery (setuptools)
 --------------------------------
 

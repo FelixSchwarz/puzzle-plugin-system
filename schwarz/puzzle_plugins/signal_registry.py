@@ -51,7 +51,17 @@ class SignalRegistry(object):
         nr_receivers = len(signal_.receivers)
         return (nr_receivers > 0)
 
-    def call_plugin(self, signal_name, *, log=None, sender=None, signal_kwargs=None):
+    def call_plugin(self, signal_name, log=None, sender=None, signal_kwargs=None):
+        return self.call_plugins(
+            signal_name,
+            log                    = log,
+            sender                 = sender,
+            signal_kwargs          = signal_kwargs,
+            expect_single_result   = True,
+            expect_single_receiver = True,
+        )
+
+    def call_plugins(self, signal_name, log=None, sender=None, signal_kwargs=None, expect_single_receiver=False, expect_single_result=False):
         if not self.has_receivers(signal_name):
             if log:
                 log.warning('no receivers for signal %r', signal_name)
@@ -59,25 +69,37 @@ class SignalRegistry(object):
         signal_ = self.signal(signal_name)
         nr_receivers = len(signal_.receivers)
         has_multiple_receivers = nr_receivers > 1
-        if has_multiple_receivers:
+        if has_multiple_receivers and expect_single_receiver:
             if log:
-                log.warning('%d receivers for signal %r', nr_receivers, signal_name)
+                log.error('%d receivers for signal %r', nr_receivers, signal_name)
+            # fail fast so this error will be noticed in case the user did not pass a logger
             return None
 
+        signal_results = self._send(signal_, sender=sender, signal_kwargs=signal_kwargs)
+
+        if not expect_single_result:
+            return signal_results
+        results = []
+        for signal_result in signal_results:
+            result = signal_result[1]
+            if result is not None:
+                results.append(signal_result)
+        if len(results) > 1:
+            raise ValueError('%d results returned after emitting signal %r' % (len(results), signal_name))
+        elif len(results) == 1:
+            single_result = results[0]
+            result_value = single_result[1]
+            return result_value
+        # all receivers return "None" -> does not matter which "None" we return
+        return None
+
+    def _send(self, signal_, sender=None, signal_kwargs=None):
+        sender = (sender,) if sender else ()
         if signal_kwargs is None:
             signal_kwargs = {}
-        sender = (sender,) if sender else ()
-        signal_results = signal_.send(*sender, **signal_kwargs)
-        if len(signal_results) != 1:
-            raise ValueError('multiple results returned after emitting signal %r' % signal_name)
-
-        receiver, receiver_result = signal_results[0]
-        return receiver_result
+        return signal_.send(*sender, **signal_kwargs)
 
     def send(self, signal_name, *, sender=None, signal_kwargs=None):
         signal_ = self.signal(signal_name)
-        sender = (sender,) if sender else ()
-        if signal_kwargs is None:
-            signal_kwargs = {}
-        signal_.send(*sender, **signal_kwargs)
+        self._send(signal_, sender=sender, signal_kwargs=signal_kwargs)
 
