@@ -4,7 +4,10 @@
 # SPDX-License-Identifier: CC0
 # written by: Felix Schwarz (2020)
 
-from unittest.mock import MagicMock
+try:
+    from unittest.mock import MagicMock
+except ImportError:
+    from mock import MagicMock
 
 from pythonic_testcase import *
 

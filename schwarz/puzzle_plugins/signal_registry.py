@@ -99,7 +99,7 @@ class SignalRegistry(object):
             signal_kwargs = {}
         return signal_.send(*sender, **signal_kwargs)
 
-    def send(self, signal_name, *, sender=None, signal_kwargs=None):
+    def send(self, signal_name, sender=None, signal_kwargs=None):
         signal_ = self.signal(signal_name)
         self._send(signal_, sender=sender, signal_kwargs=signal_kwargs)
 
