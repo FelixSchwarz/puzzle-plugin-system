@@ -1,4 +1,1 @@
-
-include *.cfg, *.md, *.txt
-include pyproject.toml
-
+include .travis.yml
