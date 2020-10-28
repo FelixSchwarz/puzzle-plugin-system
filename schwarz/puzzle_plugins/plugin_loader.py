@@ -2,7 +2,7 @@
 # The source code in this file is covered by the CC0 v1.0 license.
 # full license text: https://creativecommons.org/publicdomain/zero/1.0/
 # SPDX-License-Identifier: CC0
-# written by: Felix Schwarz (2014, 2015, 2019)
+# written by: Felix Schwarz (2014, 2015, 2019, 2020)
 
 from __future__ import division, absolute_import, print_function, unicode_literals
 
@@ -55,6 +55,10 @@ class PluginLoader(object):
         context = self._plugin_contexts[plugin_id]
         plugin.terminate(context)
         # TODO: remove from activated_plugins / _plugin_contexts
+
+    def terminate_all_activated_plugins(self):
+        for plugin_id in self.activated_plugins:
+            self.terminate_plugin(plugin_id)
 
     def is_plugin_enabled(self, plugin_id):
         return (plugin_id in self.enabled_plugins) or ('*' in self.enabled_plugins)
