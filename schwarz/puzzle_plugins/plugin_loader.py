@@ -85,5 +85,5 @@ def parse_list_str(setting_str):
     Split a string like 'foo, bar' into ('foo', 'bar').
     Also handles 'irregular' spacing like "foo  ,bar".
     """
-    return re.split('\s*,\s*', setting_str)
+    return re.split(r'\s*,\s*', setting_str)
 
