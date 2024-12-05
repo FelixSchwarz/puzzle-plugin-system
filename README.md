@@ -1,7 +1,7 @@
 Puzzle Plugin System
 =======================
 
-This repo helps implementing a plugin system for Python applications. It uses [setuptools](https://github.com/pypa/setuptools) `entry points` for plugin discovery and [blinker](https://github.com/jek/blinker) `signals` to propagate events between loosely connected components.
+This repo helps implementing a plugin system for Python applications. It uses [setuptools](https://github.com/pypa/setuptools) `entry points` for plugin discovery and [blinker](https://github.com/pallets-eco/blinker) `signals` to propagate events between loosely connected components.
 Both aspects are strictly separated so you can use the setuptools part without blinker signalling (or the other way around).
 
 ```shell
