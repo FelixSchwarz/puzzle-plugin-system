@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-# The source code in this file is covered by the CC0 v1.0 license.
-# full license text: https://creativecommons.org/publicdomain/zero/1.0/
-# SPDX-License-Identifier: CC0
+# The source code in this file is covered by the MIT license.
+# full license text: https://spdx.org/licenses/MIT.html
+# SPDX-License-Identifier: MIT
 # written by: Felix Schwarz (2019)
 
 from pkg_resources import WorkingSet
