@@ -5,9 +5,17 @@
 # written by: Felix Schwarz (2019)
 
 from pkg_resources import WorkingSet
+from dotmap import DotMap
 
 from schwarz.puzzle_plugins import PluginLoader
-from schwarz.puzzle_plugins.lib import AttrDict
+
+
+class StaticDotMap(DotMap):
+    def __init__(self, *args, **kwargs):
+        # DotMap uses multiple inheritance so we can not just pass the parameter
+        # to `super(...).__init__()`
+        kwargs['_dynamic'] = False
+        super(StaticDotMap, self).__init__(*args, **kwargs)
 
 
 def test_passes_plugin_context_for_init_and_terminate():
@@ -15,7 +23,7 @@ def test_passes_plugin_context_for_init_and_terminate():
     def _fake_init(context):
         context['key'] = 42
         _plugin_data['init_context'] = context
-    fake_plugin = AttrDict({
+    fake_plugin = StaticDotMap({
         'id': 'fake-id',
         'initialize': _fake_init,
         'terminate': lambda context: _plugin_data.setdefault('terminate_context', context),
