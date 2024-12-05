@@ -2,12 +2,9 @@
 # The source code in this file is covered by the MIT license.
 # full license text: https://spdx.org/licenses/MIT.html
 # SPDX-License-Identifier: MIT
-# written by: Felix Schwarz (2020)
+# written by: Felix Schwarz (2020, 2024)
 
-try:
-    from unittest.mock import MagicMock
-except ImportError:
-    from mock import MagicMock
+from unittest.mock import MagicMock
 
 import pytest
 
