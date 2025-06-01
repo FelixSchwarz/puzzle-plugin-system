@@ -1,7 +1,7 @@
 # The source code in this file is covered by the MIT license.
 # full license text: https://spdx.org/licenses/MIT.html
 # SPDX-License-Identifier: MIT
-# written by: Felix Schwarz (2014, 2015, 2019, 2020)
+# written by: Felix Schwarz (2014, 2015, 2019, 2020, 2025)
 
 from __future__ import division, absolute_import, print_function, unicode_literals
 
@@ -9,17 +9,19 @@ from collections import OrderedDict
 import logging
 import re
 
-import pkg_resources
+try:
+    from importlib.metadata import entry_points
+except ImportError:
+    from importlib_metadata import entry_points
 
 
 __all__ = ['parse_list_str', 'PluginLoader']
 
 class PluginLoader:
-    def __init__(self, entry_point_name, enabled_plugins=('*',), log=None, working_set=None):
+    def __init__(self, entry_point_name, enabled_plugins=('*',), log=None):
         self.entry_point_name = entry_point_name
         self.enabled_plugins = enabled_plugins
         self.log = log or logging.getLogger(__name__)
-        self.working_set = working_set or pkg_resources.working_set
         self.activated_plugins = OrderedDict()
         self._plugin_contexts = {}
         self._initialized = False
@@ -29,7 +31,14 @@ class PluginLoader:
         # LATER/enhancement: two-pass initialization, gather all requirements,
         # build a directed acyclic graph and perform a topological sort to load
         # all plugins in the right order (in case plugins depend on each other)
-        epoints = tuple(self.working_set.iter_entry_points(self.entry_point_name))
+        _all_entry_points = entry_points()
+        if isinstance(_all_entry_points, dict):
+            # Python <= 3.9
+            _epoints = _all_entry_points.get(self.entry_point_name, ())
+        else:
+            # `EntryPoints` instance, Python 3.10+
+            _epoints = _all_entry_points.select(group=self.entry_point_name)
+        epoints = tuple(_epoints)
         self.log.debug('%d plugins for entry point "%s" found', len(epoints), self.entry_point_name)
         for epoint in epoints:
             plugin_id = epoint.name
@@ -64,8 +73,7 @@ class PluginLoader:
 
     def _plugin_info(self, epoint):
         plugin_id = epoint.name
-        dist = epoint.dist
-        return '%s %s (%r, %s)' % (dist.project_name, dist.version, plugin_id, dist.location)
+        return f'{plugin_id} (module: {epoint.module}, attr: {epoint.attr})'
 
     def _plugin_from_entry_point(self, epoint):
         # LATER: catch exceptions while loading plugins

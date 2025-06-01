@@ -3,7 +3,6 @@
 # SPDX-License-Identifier: MIT
 # written by: Felix Schwarz (2019)
 
-from pkg_resources import WorkingSet
 from dotmap import DotMap
 
 from schwarz.puzzle_plugins import PluginLoader
@@ -27,8 +26,7 @@ def test_passes_plugin_context_for_init_and_terminate():
         'initialize': _fake_init,
         'terminate': lambda context: _plugin_data.setdefault('terminate_context', context),
     })
-    working_set = WorkingSet(entries=())
-    loader = PluginLoader('invalid', enabled_plugins=(), working_set=working_set)
+    loader = PluginLoader('invalid', enabled_plugins=())
     loader.activated_plugins[fake_plugin.id] = fake_plugin
     # fake initialization so we can avoid the setuptools entry point
     # machinery (prevent test pollution)
