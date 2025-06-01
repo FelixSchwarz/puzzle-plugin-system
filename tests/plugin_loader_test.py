@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # The source code in this file is covered by the MIT license.
 # full license text: https://spdx.org/licenses/MIT.html
 # SPDX-License-Identifier: MIT

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # The source code in this file is covered by the MIT license.
 # full license text: https://spdx.org/licenses/MIT.html
 # SPDX-License-Identifier: MIT
@@ -15,7 +14,7 @@ import pkg_resources
 
 __all__ = ['parse_list_str', 'PluginLoader']
 
-class PluginLoader(object):
+class PluginLoader:
     def __init__(self, entry_point_name, enabled_plugins=('*',), log=None, working_set=None):
         self.entry_point_name = entry_point_name
         self.enabled_plugins = enabled_plugins

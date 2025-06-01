@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # The source code in this file is covered by the MIT license.
 # full license text: https://spdx.org/licenses/MIT.html
 # SPDX-License-Identifier: MIT
@@ -28,7 +27,7 @@ def disconnect_signals(connected_signals, signal_registry):
         signal.disconnect(signal_handler)
 
 
-class SignalRegistry(object):
+class SignalRegistry:
     def __init__(self, blinker_namespace=None):
         if blinker_namespace is None:
             blinker_namespace = Namespace()
