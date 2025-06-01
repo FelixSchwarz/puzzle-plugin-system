@@ -1,1 +1,2 @@
-include .travis.yml
+recursive-include .github *
+recursive-include tests *.py
